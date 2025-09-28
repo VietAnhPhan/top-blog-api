@@ -53,6 +53,7 @@ app.use("/users", routes.user);
 app.use("/messages", routes.message);
 app.use("/auth", authRoutes);
 app.use("/posts", routes.post);
+app.use("/comments", routes.comment);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
