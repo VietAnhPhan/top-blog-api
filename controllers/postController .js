@@ -31,7 +31,8 @@ async function createPost(req, res, next) {
       title: req.body.title,
       body: req.body.body,
       authorId: parseInt(req.body.authorId),
-      isPublished: req.body.isPublished === "true",
+      isPublished: req.body.isPublished == true,
+      published_at: req.body.published_at,
     };
 
     const Post = await prisma.post.create({
@@ -47,7 +48,7 @@ async function createPost(req, res, next) {
 async function updatePost(req, res, next) {
   try {
     req.params.id = parseInt(req.params.id);
-    req.body.isPublished = req.body.isPublished === "true";
+    // req.body.isPublished = req.body.isPublished == true;
 
     let post = {};
     for (const [key, value] of Object.entries(req.body)) {
