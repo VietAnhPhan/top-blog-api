@@ -6,6 +6,8 @@ const userController = require("../controllers/postController ");
 
 const router = Router();
 
+router.get("/", userController.getPosts);
+
 router.use(passport.authenticate("jwt", { session: false }));
 
 const sendValidationResults = (req, res, next) => {
@@ -31,7 +33,5 @@ router.post("/", userController.createPost);
 router.put("/:id", userController.updatePost);
 
 router.delete("/:id", userController.deletePost);
-
-router.get("/", userController.getPosts);
 
 module.exports = router;

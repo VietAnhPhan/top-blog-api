@@ -13,14 +13,29 @@ async function getPost(req, res) {
 }
 
 async function getPosts(req, res) {
-  const posts = await prisma.post.findMany({
-    where: {
-      isActive: true,
-    },
-    orderBy: {
-      created_at: "desc",
-    },
-  });
+  let posts = [];
+  if (req.query.isPublished == "true") {
+    posts = await prisma.post.findMany({
+      where: {
+        isActive: true,
+        AND: {
+          isPublished: true,
+        },
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+  } else {
+    posts = await prisma.post.findMany({
+      where: {
+        isActive: true,
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+  }
 
   return res.json({ posts });
 }
