@@ -11,15 +11,59 @@ async function getComment(req, res) {
   return res.json({ comment });
 }
 
+// async function getComments(req, res) {
+//   const comments = await prisma.comment.findMany({
+//     where: {
+//       isActive: true,
+//     },
+//     orderBy: {
+//       created_at: "desc",
+//     },
+//   });
+
+//   return res.json({ comments });
+// }
+
 async function getComments(req, res) {
-  const comments = await prisma.comment.findMany({
-    where: {
-      isActive: true,
-    },
-    orderBy: {
-      created_at: "desc",
-    },
-  });
+  let comments = [];
+  if (req.query.postId) {
+    const postId = Number(req.query.postId);
+
+    comments = await prisma.comment.findMany({
+      where: {
+        isActive: true,
+        AND: {
+          postId: postId,
+        },
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+  } else {
+    comments = await prisma.comment.findMany({
+      where: {
+        isActive: true,
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+  }
 
   return res.json({ comments });
 }

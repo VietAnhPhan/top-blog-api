@@ -32,6 +32,8 @@ router.put("/:id", commentController.updateComment);
 
 router.delete("/:id", commentController.deleteComment);
 
-router.get("/", commentController.getComments);
+router.get("{:postId}", commentController.getComments);
+
+// router.get("/", commentController.getComments);
 
 module.exports = router;
