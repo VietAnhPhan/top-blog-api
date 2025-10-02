@@ -47,6 +47,38 @@ async function getComments(req, res) {
         },
       },
     });
+  } else if (req.query.authorId) {
+    const authorId = Number(req.query.authorId);
+
+    comments = await prisma.comment.findMany({
+      select: {
+        id: true,
+        comment: true,
+        created_at: true,
+        post: {
+          select: {
+            title: true,
+            authorId: true,
+          },
+        },
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+      where: {
+        isActive: true,
+        AND: {
+          post: {
+            authorId: authorId,
+          },
+        },
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
   } else {
     comments = await prisma.comment.findMany({
       where: {
